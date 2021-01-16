@@ -13,6 +13,7 @@ import { OrderLocationData, Product } from './types';
 function Orders(){
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+    const [redirectUri, setRedirectUri] = useState<boolean>(false)
     const [orderLocation, setOrderLocation] = useState<OrderLocationData>()
     
     const totalPrice = selectedProducts.reduce((sum, item) => {
@@ -26,6 +27,12 @@ function Orders(){
         })
 
     },[])
+    useEffect(()=>{
+      if(typeof orderLocation !== 'undefined' && selectedProducts.length !== 0){
+        setRedirectUri(true)
+      }
+
+    },[orderLocation, selectedProducts])
     const handleSelectProduct = (product: Product) => {
         const isAlreadySelected = checkIsSelected(selectedProducts, product)
       
@@ -42,15 +49,27 @@ function Orders(){
           ...orderLocation!,
           products: productsIds
         }
-      
-        saveOrder(payload)
-        .then((response) => {
-          toast.error(`Pedido enviado com sucesso! N° ${response.data.id}`);
-          setSelectedProducts([]);
-        })
-          .catch(() => {
-            toast.warning('Erro ao enviar pedido');
+
+        if (payload.products.length === 0){
+          //setIsError(true)
+            toast.warning('Nenhum produto selecionado')
+        }else if (payload.address == null){
+          //setIsError(true)
+          toast.warning('Nenhum endereço selecionado')
+        }
+        else {
+          saveOrder(payload)
+          .then((response) => {
+            toast.error(`Pedido enviado com sucesso! N° ${response.data.id}`);
+            setSelectedProducts([]);
           })
+            .catch(() => {
+              toast.warning('Erro ao enviar pedido');
+            })
+
+        }
+      
+          
       }
       
     return(
@@ -63,11 +82,13 @@ function Orders(){
                     selectedProducts={selectedProducts}
                 />
                 <OrderLocation onChangeLocation={location => setOrderLocation(location)}/>
-                <OrderSummary 
-                    amount={selectedProducts.length}
-                    totalPrice={totalPrice}
-                    onSubmit={handleSubmit}
-                />
+                
+                  <OrderSummary 
+                  amount={selectedProducts.length}
+                  totalPrice={totalPrice}
+                  onSubmit={handleSubmit}
+                  redirectUri={redirectUri}
+              />
                 
             </div>
             <Footer />

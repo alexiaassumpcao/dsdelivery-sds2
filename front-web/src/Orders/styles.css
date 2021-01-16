@@ -238,17 +238,22 @@
   }
   
   .order-summary-make-order {
-    width: 220px;
-    height: 45px;
-    background: #FFF;
+    background-color: #FFF;
     border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 220px;
+    display: inline-block;
+    display: flex;
+    text-align: center;
+    justify-content: center; 
     font-weight: bold;
     font-size: 18px;
-    line-height: 25px;
-    text-align: center;
+
+    border: none;
+    
     letter-spacing: -0.015em;
     color: var(--primary-color);
-    border: 0;
     cursor: pointer;
   }
   
