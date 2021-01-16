@@ -20,3 +20,4 @@ Pasta relacionada ao frontend web da aplicação. Utiliza: React, Typescript.
 - [Java](https://docs.oracle.com/en/java/)
 - [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
 - [React](https://pt-br.reactjs.org/docs/getting-started.html)
+- [Typescript](https://www.typescriptlang.org/docs/)
